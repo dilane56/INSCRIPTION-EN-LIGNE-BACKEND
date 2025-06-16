@@ -12,21 +12,26 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"candidat_id", "annee_academique_id"})
+        }
+)
 public class Inscription {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
-    private LocalDate dateInscription;
-    private String etat; // ex: "pré-validée", "en attente", "validée", "rejetée"
-    private String anneeAcademique;
-
+    private LocalDate dateSoumission;
+    private String etat;
     @ManyToOne
     private Candidat candidat;
 
-
     @ManyToOne
     private Formation formation;
+
+    @ManyToOne
+    @JoinColumn(name = "annee_academique_id")
+    private AnneeAcademique anneeAcademique;
 
     @OneToMany(mappedBy = "inscription", cascade = CascadeType.ALL)
     private List<Document> documents;
@@ -34,6 +39,6 @@ public class Inscription {
     @OneToMany(mappedBy = "inscription", cascade = CascadeType.ALL)
     private List<Notification> notifications;
 
-    // Getters, setters, constructeurs
+    // ...
 }
 

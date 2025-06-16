@@ -17,9 +17,7 @@ public class Formation {
     private String etablissement;
     private String specialite;
     private String niveau;
-    private String anneeAcademique;
-
-    @OneToMany(mappedBy = "programme")
+    @OneToMany(mappedBy = "formation")
     private List<Inscription> inscriptions;
 
     // Getters, setters, constructeurs
