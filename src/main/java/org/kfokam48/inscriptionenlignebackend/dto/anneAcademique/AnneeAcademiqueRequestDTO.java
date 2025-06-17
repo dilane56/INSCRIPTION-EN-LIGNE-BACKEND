@@ -1,5 +1,8 @@
 package org.kfokam48.inscriptionenlignebackend.dto.anneAcademique;
 
-public class AnneAcaddemiqueRequestDTO {
+import lombok.Data;
+
+@Data
+public class AnneeAcademiqueRequestDTO {
     private String libelle;
 }
