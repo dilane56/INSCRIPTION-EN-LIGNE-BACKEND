@@ -1,6 +1,7 @@
 package org.kfokam48.inscriptionenlignebackend.dto.user;
 
 import lombok.Data;
+import org.kfokam48.inscriptionenlignebackend.enums.Roles;
 
 @Data
 public class UserResponseDTO {
@@ -9,6 +10,6 @@ public class UserResponseDTO {
     private String lastName;
     private String email;
     private String phone;
-    private String role;
+    private Roles role;
 
 }
