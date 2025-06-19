@@ -4,10 +4,11 @@ import org.kfokam48.inscriptionenlignebackend.dto.anneAcademique.AnneeAcademique
 import org.kfokam48.inscriptionenlignebackend.dto.anneAcademique.AnneeAcademiqueResponseDTO;
 import org.kfokam48.inscriptionenlignebackend.model.AnneeAcademique;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class AnneeAcademiqueMapper {
     private final ModelMapper modelMapper ;
 
