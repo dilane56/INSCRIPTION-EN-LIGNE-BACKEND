@@ -11,7 +11,6 @@ import org.kfokam48.inscriptionenlignebackend.enums.Roles;
 @AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "user_type")
 @Table(name = "users")
 public abstract class User {
     @Id

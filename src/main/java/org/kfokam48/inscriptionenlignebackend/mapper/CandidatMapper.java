@@ -6,9 +6,10 @@ import org.kfokam48.inscriptionenlignebackend.dto.candidat.InscriptionInCandidat
 import org.kfokam48.inscriptionenlignebackend.model.Candidat;
 import org.kfokam48.inscriptionenlignebackend.model.Inscription;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public class CandidatMapper {
     private final ModelMapper modelMapper;
 

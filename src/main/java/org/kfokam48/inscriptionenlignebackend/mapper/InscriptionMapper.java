@@ -10,9 +10,10 @@ import org.kfokam48.inscriptionenlignebackend.repository.AnneeAcademiqueReposito
 import org.kfokam48.inscriptionenlignebackend.repository.CandidatRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.FormationRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public class InscriptionMapper {
 
     private final ModelMapper modelMapper;
@@ -65,7 +66,7 @@ public class InscriptionMapper {
 
     }
 
-    public List<InscriptionResponeDTO> innscriptionListToInscriptionResponseDTOList(List<Inscription> inscriptions){
+    public List<InscriptionResponeDTO> inscriptionListToInscriptionResponseDTOList(List<Inscription> inscriptions){
         return inscriptions.stream()
                 .map(this::inscriptionToInscriptionResponeDTO)
                 .toList();

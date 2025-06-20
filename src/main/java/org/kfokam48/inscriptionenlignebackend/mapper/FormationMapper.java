@@ -6,10 +6,11 @@ import org.kfokam48.inscriptionenlignebackend.dto.formation.InscriptionInFormati
 import org.kfokam48.inscriptionenlignebackend.model.Formation;
 import org.kfokam48.inscriptionenlignebackend.model.Inscription;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class FormationMapper {
     private final ModelMapper modelMapper;
 
