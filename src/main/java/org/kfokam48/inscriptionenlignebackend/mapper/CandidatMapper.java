@@ -47,6 +47,11 @@ public class CandidatMapper {
         candidatResponseDTO.setPhone(candidat.getPhone());
         candidatResponseDTO.setDateNaissance(candidat.getDateNaissance());
         candidatResponseDTO.setRole(candidat.getRole());
+        candidatResponseDTO.setNationalite(candidat.getNationalite());
+        candidatResponseDTO.setTypeDePieceIdentite(candidat.getTypeDePieceIdentite());
+        candidatResponseDTO.setAdresse(candidat.getAdresse());
+        candidatResponseDTO.setContactPourUrgence(candidat.getContactPourUrgence());
+        candidatResponseDTO.setSexe(candidat.getSexe());
         candidatResponseDTO.setInscriptions(inscripttionListToInscriptionInCandidatDTOlist(candidat.getInscriptions()));
         return candidatResponseDTO;
     }

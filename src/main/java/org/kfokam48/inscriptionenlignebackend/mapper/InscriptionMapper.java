@@ -39,11 +39,12 @@ public class InscriptionMapper {
     public DocumentInInscription documentToDocumentInInscription(Document document){
         DocumentInInscription documentInInscription = new DocumentInInscription();
         documentInInscription.setId(document.getId());
-        documentInInscription.setTypeDocument(document.getTypeDocument());
+        documentInInscription.setTypeDocument(document.getType());
         documentInInscription.setCommentaire(document.getCommentaire());
-        documentInInscription.setFormatValide(document.getFormatValide());
-        documentInInscription.setValideParOCR(document.getValideParOCR());
-        documentInInscription.setFichierUrl(document.getFichierUrl());
+//        documentInInscription.setFormatValide(document.getFormatValide());
+//        documentInInscription.setValideParOCR(document.getValideParOCR());
+        documentInInscription.setNom(document.getNom());
+        documentInInscription.setData(document.getData());
         return documentInInscription;
 
     }

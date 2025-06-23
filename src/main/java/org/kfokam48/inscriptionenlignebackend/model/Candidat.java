@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.kfokam48.inscriptionenlignebackend.enums.Sexe;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,5 +17,10 @@ public class  Candidat  extends User{
     private LocalDate dateNaissance;
     @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL)
     private List<Inscription> inscriptions;
+    private String nationalite;
+    private String typeDePieceIdentite;
+    private String adresse;
+    private String contactPourUrgence;
+    private Sexe sexe;
 }
 

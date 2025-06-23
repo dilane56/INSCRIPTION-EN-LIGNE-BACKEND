@@ -1,9 +1,6 @@
 package org.kfokam48.inscriptionenlignebackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,21 +8,21 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 @Entity
 public class Document {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
-    private String typeDocument; // "CNI recto", "Diplôme", etc.
-    private String fichierUrl;
-    private Boolean formatValide;
-    private Boolean valideParOCR;
+    private String nom;
+    private String type;
     private String commentaire;
+
+    @Lob
+    private byte[] data;
 
     @ManyToOne
     private Inscription inscription;
-
-    // Getters, setters, constructeurs
 }
+
 

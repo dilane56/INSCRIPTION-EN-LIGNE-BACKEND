@@ -19,7 +19,7 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private String password;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
     private String phone;
 

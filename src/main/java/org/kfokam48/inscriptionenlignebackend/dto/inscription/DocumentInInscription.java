@@ -6,9 +6,10 @@ import lombok.Data;
 public class DocumentInInscription {
     private Long id;
     private String typeDocument;
-    private String fichierUrl;
-    private Boolean formatValide;
-    private Boolean valideParOCR;
+    private String nom;
+    private byte[] data;
+//    private Boolean formatValide;
+//    private Boolean valideParOCR;
     private String commentaire;
 
 }

@@ -4,10 +4,12 @@ import jakarta.transaction.Transactional;
 import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatRequestDTO;
 import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatResponseDTO;
 import org.kfokam48.inscriptionenlignebackend.enums.Roles;
+import org.kfokam48.inscriptionenlignebackend.exception.RessourceAlreadyExistException;
 import org.kfokam48.inscriptionenlignebackend.exception.RessourceNotFoundException;
 import org.kfokam48.inscriptionenlignebackend.mapper.CandidatMapper;
 import org.kfokam48.inscriptionenlignebackend.model.Candidat;
 import org.kfokam48.inscriptionenlignebackend.repository.CandidatRepository;
+import org.kfokam48.inscriptionenlignebackend.repository.UserRepository;
 import org.kfokam48.inscriptionenlignebackend.service.CandidatService;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,12 @@ import java.util.List;
 public class CandidatServiceImpl implements CandidatService {
     private final CandidatRepository candidatRepository;
     private final CandidatMapper candidatMapper;
+    private final UserRepository userRepository;
 
-    public CandidatServiceImpl(CandidatRepository candidatRepository, CandidatMapper candidatMapper) {
+    public CandidatServiceImpl(CandidatRepository candidatRepository, CandidatMapper candidatMapper, UserRepository userRepository) {
         this.candidatRepository = candidatRepository;
         this.candidatMapper = candidatMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -39,21 +43,34 @@ public class CandidatServiceImpl implements CandidatService {
 
     @Override
     public CandidatResponseDTO createCandidat(CandidatRequestDTO candidat) {
-        Candidat newCandidat = candidatMapper.candidatRequestDTOToCandidat(candidat);
-        newCandidat.setRole(Roles.ETUDIANT);
-        return  candidatMapper.candidatToCandidatResponseDTO(candidatRepository.save(newCandidat));
+        if(userRepository.existsByEmail(candidat.getEmail())){
+            throw new RessourceAlreadyExistException("Email already exists");
+        }else{
+            Candidat newCandidat = candidatMapper.candidatRequestDTOToCandidat(candidat);
+            newCandidat.setRole(Roles.ETUDIANT);
+            return  candidatMapper.candidatToCandidatResponseDTO(candidatRepository.save(newCandidat));
+        }
+
     }
 
     @Override
     public CandidatResponseDTO updateCandidat(CandidatRequestDTO candidat, Long id) {
         Candidat newCandidat = candidatRepository.findById(id).orElseThrow(()-> new RessourceNotFoundException("Candidat not found"));
-        newCandidat.setEmail(candidat.getEmail());
-        newCandidat.setRole(Roles.ETUDIANT);
-        newCandidat.setFirstName(candidat.getFirstName());
-        newCandidat.setLastName(candidat.getLastName());
-        newCandidat.setDateNaissance(candidat.getDateNaissance());
-        candidatRepository.save(newCandidat);
-        return candidatMapper.candidatToCandidatResponseDTO(newCandidat);
+        if(userRepository.existsByEmail(candidat.getEmail())&& newCandidat.getEmail().equals(candidat.getEmail())){
+
+                newCandidat.setEmail(candidat.getEmail());
+                newCandidat.setRole(Roles.ETUDIANT);
+                newCandidat.setFirstName(candidat.getFirstName());
+                newCandidat.setLastName(candidat.getLastName());
+                newCandidat.setDateNaissance(candidat.getDateNaissance());
+                candidatRepository.save(newCandidat);
+                return candidatMapper.candidatToCandidatResponseDTO(newCandidat);
+            }else{
+                throw new RessourceAlreadyExistException("Email already exists");
+            }
+
+
+
     }
 
     @Override
