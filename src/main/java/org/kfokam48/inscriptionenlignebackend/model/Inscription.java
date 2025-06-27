@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,9 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"candidat_id", "annee_academique_id"})
-        }
+        git @Table(uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"candidat_id", "formation_id"})
+        })
+
 )
 public class Inscription {
     @Id @GeneratedValue
@@ -29,12 +31,8 @@ public class Inscription {
     @ManyToOne
     private Formation formation;
 
-    @ManyToOne
-    @JoinColumn(name = "annee_academique_id")
-    private AnneeAcademique anneeAcademique;
-
     @OneToMany(mappedBy = "inscription", cascade = CascadeType.ALL)
-    private List<Document> documents;
+    private List<Document> documents = new ArrayList<>();
 
     @OneToMany(mappedBy = "inscription", cascade = CascadeType.ALL)
     private List<Notification> notifications;

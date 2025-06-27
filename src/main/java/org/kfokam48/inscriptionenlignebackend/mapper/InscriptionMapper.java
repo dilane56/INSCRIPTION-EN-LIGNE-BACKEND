@@ -6,7 +6,7 @@ import org.kfokam48.inscriptionenlignebackend.dto.inscription.InscriptionRespone
 import org.kfokam48.inscriptionenlignebackend.exception.RessourceNotFoundException;
 import org.kfokam48.inscriptionenlignebackend.model.Document;
 import org.kfokam48.inscriptionenlignebackend.model.Inscription;
-import org.kfokam48.inscriptionenlignebackend.repository.AnneeAcademiqueRepository;
+import org.kfokam48.inscriptionenlignebackend.repository.FiliereRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.CandidatRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.FormationRepository;
 import org.modelmapper.ModelMapper;
@@ -18,19 +18,19 @@ public class InscriptionMapper {
 
     private final ModelMapper modelMapper;
     private final CandidatRepository candidatRepository;
-    private final AnneeAcademiqueRepository anneeAcademiqueRepository;
+    private final FiliereRepository filiereRepository;
     private final FormationRepository formationRepository;
 
-    public InscriptionMapper(ModelMapper modelMapper, CandidatRepository candidatRepository, AnneeAcademiqueRepository anneeAcademiqueRepository, FormationRepository formationRepository) {
+    public InscriptionMapper(ModelMapper modelMapper, CandidatRepository candidatRepository, FiliereRepository filiereRepository, FormationRepository formationRepository) {
         this.modelMapper = modelMapper;
         this.candidatRepository = candidatRepository;
-        this.anneeAcademiqueRepository = anneeAcademiqueRepository;
+        this.filiereRepository = filiereRepository;
         this.formationRepository = formationRepository;
     }
     public Inscription inscriptionRequestDTOToInscription(InscriptionRequestDTO inscriptionRequestDTO){
         Inscription inscription = new Inscription();
         inscription.setCandidat(candidatRepository.findById(inscriptionRequestDTO.getCandidatId()).orElseThrow(()-> new RessourceNotFoundException("Candidat not found")));
-        inscription.setAnneeAcademique(anneeAcademiqueRepository.findById(inscriptionRequestDTO.getAnneeAcademiqueId()).orElseThrow(()->new RessourceNotFoundException("AnneeAcademique not found")));
+        inscription.setAnneeAcademique(filiereRepository.findById(inscriptionRequestDTO.getAnneeAcademiqueId()).orElseThrow(()->new RessourceNotFoundException("AnneeAcademique not found")));
         inscription.setFormation(formationRepository.findById(inscriptionRequestDTO.getFormationId()).orElseThrow(()->new RessourceNotFoundException("Formation not found")));
         return inscription;
 

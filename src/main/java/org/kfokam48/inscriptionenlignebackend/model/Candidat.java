@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.kfokam48.inscriptionenlignebackend.enums.Sexe;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,7 +17,7 @@ import java.util.List;
 public class  Candidat  extends User{
     private LocalDate dateNaissance;
     @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL)
-    private List<Inscription> inscriptions;
+    private List<Inscription> inscriptions= new ArrayList<>();
     private String nationalite;
     private String typeDePieceIdentite;
     private String adresse;

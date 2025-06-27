@@ -5,9 +5,8 @@ import org.kfokam48.inscriptionenlignebackend.dto.inscription.InscriptionRequest
 import org.kfokam48.inscriptionenlignebackend.dto.inscription.InscriptionResponeDTO;
 import org.kfokam48.inscriptionenlignebackend.exception.RessourceNotFoundException;
 import org.kfokam48.inscriptionenlignebackend.mapper.InscriptionMapper;
-import org.kfokam48.inscriptionenlignebackend.model.Formation;
 import org.kfokam48.inscriptionenlignebackend.model.Inscription;
-import org.kfokam48.inscriptionenlignebackend.repository.AnneeAcademiqueRepository;
+import org.kfokam48.inscriptionenlignebackend.repository.FiliereRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.CandidatRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.FormationRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.InscriptionRepository;
@@ -21,10 +20,10 @@ public class InscriptionServiceImpl  implements InscriptionService {
     private final InscriptionRepository inscriptionRepository;
     private final InscriptionMapper inscriptionMapper;
     private final CandidatRepository candidatRepository;
-    private final AnneeAcademiqueRepository academiqueRepository;
+    private final FiliereRepository academiqueRepository;
     private final FormationRepository formationRepository;
 
-    public InscriptionServiceImpl(InscriptionRepository inscriptionRepository, InscriptionMapper inscriptionMapper, CandidatRepository candidatRepository, AnneeAcademiqueRepository academiqueRepository, FormationRepository formationRepository) {
+    public InscriptionServiceImpl(InscriptionRepository inscriptionRepository, InscriptionMapper inscriptionMapper, CandidatRepository candidatRepository, FiliereRepository academiqueRepository, FormationRepository formationRepository) {
         this.inscriptionRepository = inscriptionRepository;
         this.inscriptionMapper = inscriptionMapper;
         this.candidatRepository = candidatRepository;
