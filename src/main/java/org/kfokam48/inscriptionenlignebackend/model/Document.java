@@ -4,25 +4,43 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.kfokam48.inscriptionenlignebackend.enums.TypeDocument;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 public class Document {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     private String nom;
-    private String type;
-    private String commentaire;
-
-    @Lob
-    private byte[] data;
-
+    private String nomOriginal;
+    
+    @Enumerated(EnumType.STRING)
+    private TypeDocument typeDocument;
+    
+    private String mimeType;
+    private Long taille;
+    @Column(length = 1000)
+    private String cheminFichier; // Pour MinIO - URL longue
+    private String hashDocument; // Pour détecter les doublons
+    
+    private Boolean valide = false;
+    private String commentaireValidation;
+    private LocalDateTime dateUpload = LocalDateTime.now();
+    private LocalDateTime dateValidation;
+    
     @ManyToOne
+    @JoinColumn(name = "inscription_id")
     private Inscription inscription;
+    
+    @ManyToOne
+    @JoinColumn(name = "admin_validateur_id")
+    private Admin adminValidateur;
 }
 
 

@@ -22,6 +22,12 @@ public abstract class User {
     @Column(unique = true)
     private String email;
     private String phone;
+    
+    // OAuth2 fields
+    private String provider; // "local", "google", "microsoft"
+    private String providerId;
+    private String imageUrl;
+    private Boolean emailVerified = false;
 
     @Enumerated(EnumType.STRING)
     private Roles role; // Définition des rôles (Student, Teacher, Admin)

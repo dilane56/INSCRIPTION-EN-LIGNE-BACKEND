@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription soumise</title>
+</head>
+<body>
+    <h2>Inscription soumise avec succès</h2>
+    <p>Bonjour <span th:text="${candidatNom}"></span>,</p>
+    <p>Votre inscription pour la formation <strong th:text="${formationNom}"></strong> a été soumise avec succès.</p>
+    <p>Numéro d'inscription: <strong th:text="${numeroInscription}"></strong></p>
+    <p>Vous recevrez une notification dès que votre dossier sera traité.</p>
+    <p>Cordialement,<br>L'équipe d'admission</p>
+</body>
+</html>

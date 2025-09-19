@@ -11,6 +11,7 @@ import java.time.LocalDate;
 
 @Data
 public class CandidatRequestDTO {
+    private String email;
     private LocalDate dateNaissance;
     private String firstName;
     private String lastName;

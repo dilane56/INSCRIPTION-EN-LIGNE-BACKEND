@@ -2,44 +2,41 @@ package org.kfokam48.inscriptionenlignebackend.controller;
 
 import org.kfokam48.inscriptionenlignebackend.dto.inscription.InscriptionRequestDTO;
 import org.kfokam48.inscriptionenlignebackend.dto.inscription.InscriptionResponeDTO;
-import org.kfokam48.inscriptionenlignebackend.service.impl.InscriptionServiceImpl;
+import org.kfokam48.inscriptionenlignebackend.model.User;
+import org.kfokam48.inscriptionenlignebackend.service.InscriptionService;
+import org.kfokam48.inscriptionenlignebackend.service.auth.AuthService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/inscriptions")
 public class InscriptionController {
-    private final InscriptionServiceImpl inscriptionService;
-
-    public InscriptionController(InscriptionServiceImpl inscriptionService) {
+    
+    private final InscriptionService inscriptionService;
+    private final AuthService authService;
+    
+    public InscriptionController(InscriptionService inscriptionService, AuthService authService) {
         this.inscriptionService = inscriptionService;
+        this.authService = authService;
     }
-
-
-    @GetMapping
-    public List<InscriptionResponeDTO> findAll() {
-        return inscriptionService.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public InscriptionResponeDTO findById(@PathVariable Long id) {
-        return inscriptionService.findById(id);
-    }
-
+    
     @PostMapping
-    public InscriptionResponeDTO save(@RequestBody InscriptionRequestDTO dto) {
-        return inscriptionService.save(dto);
+    public ResponseEntity<InscriptionResponeDTO> createInscription(
+            @RequestBody InscriptionRequestDTO inscriptionRequestDTO,
+            Authentication authentication) {
+        
+        String email = authentication.getName();
+        User user = authService.getUserByEmail(email);
+        inscriptionRequestDTO.setCandidatId(user.getId());
+        
+        InscriptionResponeDTO inscription = inscriptionService.save(inscriptionRequestDTO);
+        return ResponseEntity.ok(inscription);
     }
-
-    @PutMapping("/{id}")
-    public InscriptionResponeDTO update(@RequestBody InscriptionRequestDTO dto, @PathVariable Long id) {
-        return inscriptionService.update(dto, id);
-    }
-
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
-        return inscriptionService.delete(id);
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<InscriptionResponeDTO> getInscriptionById(@PathVariable Long id) {
+        InscriptionResponeDTO inscription = inscriptionService.findById(id);
+        return ResponseEntity.ok(inscription);
     }
 }
-

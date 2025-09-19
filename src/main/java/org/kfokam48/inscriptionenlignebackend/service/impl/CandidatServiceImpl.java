@@ -11,6 +11,7 @@ import org.kfokam48.inscriptionenlignebackend.model.Candidat;
 import org.kfokam48.inscriptionenlignebackend.repository.CandidatRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.UserRepository;
 import org.kfokam48.inscriptionenlignebackend.service.CandidatService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class CandidatServiceImpl implements CandidatService {
     private final CandidatRepository candidatRepository;
     private final CandidatMapper candidatMapper;
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     public CandidatServiceImpl(CandidatRepository candidatRepository, CandidatMapper candidatMapper, UserRepository userRepository) {
         this.candidatRepository = candidatRepository;
@@ -47,7 +50,8 @@ public class CandidatServiceImpl implements CandidatService {
             throw new RessourceAlreadyExistException("Email already exists");
         }else{
             Candidat newCandidat = candidatMapper.candidatRequestDTOToCandidat(candidat);
-            newCandidat.setRole(Roles.ETUDIANT);
+            newCandidat.setRole(Roles.CANDIDAT);
+            newCandidat.setPassword(passwordEncoder.encode(candidat.getPassword()));
             return  candidatMapper.candidatToCandidatResponseDTO(candidatRepository.save(newCandidat));
         }
 
@@ -59,10 +63,12 @@ public class CandidatServiceImpl implements CandidatService {
         if(userRepository.existsByEmail(candidat.getEmail())&& newCandidat.getEmail().equals(candidat.getEmail())){
 
                 newCandidat.setEmail(candidat.getEmail());
-                newCandidat.setRole(Roles.ETUDIANT);
+                newCandidat.setRole(Roles.CANDIDAT);
                 newCandidat.setFirstName(candidat.getFirstName());
                 newCandidat.setLastName(candidat.getLastName());
                 newCandidat.setDateNaissance(candidat.getDateNaissance());
+                newCandidat.setPassword(passwordEncoder.encode(candidat.getPassword()));
+
                 candidatRepository.save(newCandidat);
                 return candidatMapper.candidatToCandidatResponseDTO(newCandidat);
             }else{

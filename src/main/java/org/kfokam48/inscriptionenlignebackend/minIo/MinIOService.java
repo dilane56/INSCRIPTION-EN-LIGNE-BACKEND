@@ -4,9 +4,7 @@ package org.kfokam48.inscriptionenlignebackend.minIo;
 
 
 
-import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import io.minio.http.Method;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +28,17 @@ public class MinIOService {
                 .endpoint(minioUrl)
                 .credentials(accessKey, secretKey)
                 .build();
+        
+        // Créer le bucket s'il n'existe pas
+        try {
+            boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if (!bucketExists) {
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+                System.out.println("✅ Bucket MinIO créé : " + bucketName);
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Erreur lors de la création du bucket : " + e.getMessage());
+        }
     }
 
     public String uploadFile(MultipartFile file) throws Exception {

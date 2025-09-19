@@ -7,6 +7,7 @@ import org.kfokam48.inscriptionenlignebackend.exception.RessourceNotFoundExcepti
 import org.kfokam48.inscriptionenlignebackend.mapper.FormationMapper;
 import org.kfokam48.inscriptionenlignebackend.model.Formation;
 import org.kfokam48.inscriptionenlignebackend.repository.FormationRepository;
+import org.kfokam48.inscriptionenlignebackend.repository.NiveauRepository;
 import org.kfokam48.inscriptionenlignebackend.service.FormationService;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,12 @@ import java.util.List;
 public class FormationServiceImpl  implements FormationService {
     private final FormationRepository formationRepository;
     private final FormationMapper formationMapper;
+    private final NiveauRepository niveauRepository;
 
-    public FormationServiceImpl(FormationRepository formationRepository, FormationMapper formationMapper) {
+    public FormationServiceImpl(FormationRepository formationRepository, FormationMapper formationMapper, NiveauRepository niveauRepository) {
         this.formationRepository = formationRepository;
         this.formationMapper = formationMapper;
+        this.niveauRepository = niveauRepository;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class FormationServiceImpl  implements FormationService {
         formation.setNomFormation(formationRequestDTO.getNomFormation());
         formation.setEtablissement(formationRequestDTO.getEtablissement());
         formation.setSpecialite(formationRequestDTO.getSpecialite());
-        formation.setNiveau(formationRequestDTO.getNiveau());
+        formation.setNiveau(niveauRepository.findById(formationRequestDTO.getNiveauId()).orElseThrow(()->new RessourceNotFoundException("Niveau not found")));
         formation = formationRepository.save(formation);
         return formationMapper.formationToFormationResponseDTO(formation);
     }

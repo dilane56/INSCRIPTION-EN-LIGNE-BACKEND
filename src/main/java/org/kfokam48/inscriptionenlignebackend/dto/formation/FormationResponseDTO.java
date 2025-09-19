@@ -1,6 +1,7 @@
 package org.kfokam48.inscriptionenlignebackend.dto.formation;
 
 import lombok.Data;
+import org.kfokam48.inscriptionenlignebackend.dto.niveau.NiveauInFromationDTO;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class FormationResponseDTO {
     private String nomFormation;
     private String etablissement;
     private String specialite;
-    private String niveau;
+    private NiveauInFromationDTO niveau;
     private List<InscriptionInFormationDTO> inscriptions;
 
 }

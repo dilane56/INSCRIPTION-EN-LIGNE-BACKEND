@@ -11,6 +11,7 @@ import org.kfokam48.inscriptionenlignebackend.model.Admin;
 import org.kfokam48.inscriptionenlignebackend.repository.AdminRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.UserRepository;
 import org.kfokam48.inscriptionenlignebackend.service.AdminService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
     private final AdminMapper adminMapper;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     public AdminServiceImpl(UserRepository userRepository, AdminRepository adminRepository, AdminMapper adminMapper) {
         this.userRepository = userRepository;
@@ -46,6 +49,7 @@ public class AdminServiceImpl implements AdminService {
         }else {
             Admin admin = adminMapper.adminRequestDTOToAdmin(adminDTO);
             admin.setRole(Roles.ADMIN);
+            admin.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
             return adminMapper.adminToAdminResponseDTO(adminRepository.save(admin));
         }
 
@@ -58,7 +62,7 @@ public class AdminServiceImpl implements AdminService {
             admin.setEmail(adminDTO.getEmail());
             admin.setFirstName(adminDTO.getFirstName());
             admin.setLastName(adminDTO.getLastName());
-            admin.setPassword(adminDTO.getPassword());
+           admin.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
             admin.setRole(Roles.ADMIN);
             return adminMapper.adminToAdminResponseDTO(adminRepository.save(admin));
 

@@ -11,5 +11,6 @@ public interface InscriptionService {
     public InscriptionResponeDTO update(InscriptionRequestDTO inscriptionRequestDTO, Long id);
     public String delete(Long id);
     public List<InscriptionResponeDTO> findAll();
+    public List<InscriptionResponeDTO> getInscriptionsByCandidat(Long candidatId);
 
 }

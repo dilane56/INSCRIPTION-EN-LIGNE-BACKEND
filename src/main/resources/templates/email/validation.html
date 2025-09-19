@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription validée</title>
+</head>
+<body>
+    <h2>🎉 Félicitations ! Votre inscription est validée</h2>
+    <p>Bonjour <span th:text="${candidatNom}"></span>,</p>
+    <p>Nous avons le plaisir de vous informer que votre inscription pour la formation <strong th:text="${formationNom}"></strong> a été <strong>validée</strong>.</p>
+    <p>Vous recevrez prochainement les informations concernant la suite du processus.</p>
+    <p>Félicitations et bienvenue !</p>
+    <p>Cordialement,<br>L'équipe d'admission</p>
+</body>
+</html>

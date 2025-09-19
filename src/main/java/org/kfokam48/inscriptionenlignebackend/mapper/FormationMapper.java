@@ -13,9 +13,11 @@ import java.util.List;
 @Component
 public class FormationMapper {
     private final ModelMapper modelMapper;
+    private final NiveauMapper niveauMapper;
 
-    public FormationMapper(ModelMapper modelMapper) {
+    public FormationMapper(ModelMapper modelMapper, NiveauMapper niveauMapper) {
         this.modelMapper = modelMapper;
+        this.niveauMapper = niveauMapper;
     }
 
     public Formation formationRequestDTOToFormation(FormationRequestDTO formationRequestDTO) {
@@ -28,7 +30,7 @@ public class FormationMapper {
         formationResponseDTO.setNomFormation(formation.getNomFormation());
         formationResponseDTO.setEtablissement(formation.getEtablissement());
         formationResponseDTO.setSpecialite(formation.getSpecialite());
-        formationResponseDTO.setNiveau(formation.getNiveau());
+        formationResponseDTO.setNiveau(niveauMapper.niveauToNiveauInFormationDTO(formation.getNiveau()));
         formationResponseDTO.setInscriptions(inscriptionListToInscriptionInFormationList(formation.getInscriptions()));
         return formationResponseDTO;
 

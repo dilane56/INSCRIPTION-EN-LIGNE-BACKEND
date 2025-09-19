@@ -7,5 +7,5 @@ public class FormationRequestDTO {
     private String nomFormation;
     private String etablissement;
     private String specialite;
-    private String niveau;
+    private Long niveauId;
 }

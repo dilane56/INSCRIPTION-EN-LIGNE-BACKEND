@@ -8,8 +8,7 @@ public class DocumentInInscription {
     private String typeDocument;
     private String nom;
     private byte[] data;
-//    private Boolean formatValide;
-//    private Boolean valideParOCR;
+    private Boolean valide;
     private String commentaire;
 
 }

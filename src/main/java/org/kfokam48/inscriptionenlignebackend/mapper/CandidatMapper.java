@@ -27,7 +27,16 @@ public class CandidatMapper {
         inscriptionInCandidatDTO.setFormationName(inscription.getFormation().getNomFormation());
         inscriptionInCandidatDTO.setAnneeAcademique(inscription.getAnneeAcademique().getLibelle());
         inscriptionInCandidatDTO.setDateSoumission(inscription.getDateSoumission());
-        inscriptionInCandidatDTO.setEtat(inscription.getEtat());
+        inscriptionInCandidatDTO.setStatut(inscription.getStatut());
+        inscriptionInCandidatDTO.setDateValidation(inscription.getDateValidation());
+        inscriptionInCandidatDTO.setEtapeActuelle(inscription.getEtapeActuelle());
+        inscriptionInCandidatDTO.setPourcentageCompletion(inscription.getPourcentageCompletion());
+        inscriptionInCandidatDTO.setCommentaireAdmin(inscription.getCommentaireAdmin());
+        if (inscription.getAdminValidateur() != null) {
+            inscriptionInCandidatDTO.setAdminValidateurNom(inscription.getAdminValidateur().getFirstName());
+        }
+        inscriptionInCandidatDTO.setDerniereModification(inscription.getDerniereModification());
+
         return inscriptionInCandidatDTO;
 
     }

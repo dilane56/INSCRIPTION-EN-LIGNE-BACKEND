@@ -1,5 +1,6 @@
 package org.kfokam48.inscriptionenlignebackend.mapper;
 
+import org.kfokam48.inscriptionenlignebackend.dto.niveau.NiveauInFromationDTO;
 import org.kfokam48.inscriptionenlignebackend.dto.niveau.NiveauRequestDTO;
 import org.kfokam48.inscriptionenlignebackend.dto.niveau.NiveauResponseDTO;
 import org.kfokam48.inscriptionenlignebackend.model.Niveau;
@@ -29,6 +30,13 @@ public class NiveauMapper {
         return niveaux.stream()
                 .map(this::niveauToNiveauResponseDTO)
                 .toList();
+    }
+
+    public NiveauInFromationDTO niveauToNiveauInFormationDTO(Niveau niveau){
+        NiveauInFromationDTO niveauInFromationDTO = new NiveauInFromationDTO();
+        niveauInFromationDTO.setId(niveau.getId());
+        niveauInFromationDTO.setLibelle(niveau.getLibelle());
+        return niveauInFromationDTO;
     }
 }
 
