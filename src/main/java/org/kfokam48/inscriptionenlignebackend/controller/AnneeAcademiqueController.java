@@ -29,4 +29,37 @@ public class AnneeAcademiqueController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping
+    public ResponseEntity<AnneeAcademique> createAnneeAcademique(@RequestBody AnneeAcademique annee) {
+        AnneeAcademique saved = anneeAcademiqueRepository.save(annee);
+        return ResponseEntity.status(201).body(saved);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AnneeAcademique> updateAnneeAcademique(@PathVariable Long id, @RequestBody AnneeAcademique annee) {
+        return anneeAcademiqueRepository.findById(id)
+                .map(existing -> {
+                    existing.setLibelle(annee.getLibelle());
+                    existing.setDateDebut(annee.getDateDebut());
+                    existing.setDateFin(annee.getDateFin());
+                    existing.setActive(annee.getActive());
+                    existing.setDescription(annee.getDescription());
+                    existing.setCapaciteMaximale(annee.getCapaciteMaximale());
+                    existing.setDateLimiteInscription(annee.getDateLimiteInscription());
+                    AnneeAcademique updated = anneeAcademiqueRepository.save(existing);
+                    return ResponseEntity.ok(updated);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAnneeAcademique(@PathVariable Long id) {
+        return anneeAcademiqueRepository.findById(id)
+                .map(existing -> {
+                    anneeAcademiqueRepository.delete(existing);
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

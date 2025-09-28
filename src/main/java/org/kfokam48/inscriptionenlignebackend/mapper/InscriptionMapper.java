@@ -9,7 +9,6 @@ import org.kfokam48.inscriptionenlignebackend.model.Inscription;
 import org.kfokam48.inscriptionenlignebackend.repository.AnneeAcademiqueRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.CandidatRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.FormationRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,14 +16,12 @@ import java.util.List;
 @Component
 public class InscriptionMapper {
 
-    private final ModelMapper modelMapper;
     private final CandidatRepository candidatRepository;
     private final FormationRepository formationRepository;
     private final AnneeAcademiqueRepository anneeAcademiqueRepository;
 
-    public InscriptionMapper(ModelMapper modelMapper, CandidatRepository candidatRepository, 
+    public InscriptionMapper(CandidatRepository candidatRepository,
                            FormationRepository formationRepository, AnneeAcademiqueRepository anneeAcademiqueRepository) {
-        this.modelMapper = modelMapper;
         this.candidatRepository = candidatRepository;
         this.formationRepository = formationRepository;
         this.anneeAcademiqueRepository = anneeAcademiqueRepository;
@@ -39,9 +36,9 @@ public class InscriptionMapper {
         inscription.setFormation(formationRepository.findById(inscriptionRequestDTO.getFormationId())
                 .orElseThrow(() -> new RessourceNotFoundException("Formation not found")));
         
-        // Initialiser la progression : étape 1 complétée = 20%
-        inscription.setEtapeActuelle(2);
-        inscription.setPourcentageCompletion(20.0);
+        // Initialiser la progression : étape 1 en cours
+        inscription.setEtapeActuelle(1);
+        inscription.setPourcentageCompletion(0.0);
         
         return inscription;
     }
@@ -88,7 +85,17 @@ public class InscriptionMapper {
         inscriptionResponeDTO.setDateCreation(inscription.getDateCreation());
         inscriptionResponeDTO.setDerniereModification(inscription.getDerniereModification());
         inscriptionResponeDTO.setDocuments(documentListToDocumentInInscriptionList(inscription.getDocuments()));
-        
+
+        // --- Ajout du mapping des coordonnées du candidat ---
+        if (inscription.getCandidat() != null) {
+            inscriptionResponeDTO.setAdresse(inscription.getCandidat().getAdresse());
+            inscriptionResponeDTO.setVille(inscription.getCandidat().getVille());
+            inscriptionResponeDTO.setCodePostal(inscription.getCandidat().getCodePostal());
+            inscriptionResponeDTO.setPays(inscription.getCandidat().getPays());
+            inscriptionResponeDTO.setContactPourUrgence(inscription.getCandidat().getContactPourUrgence());
+            inscriptionResponeDTO.setTelephoneUrgence(inscription.getCandidat().getTelephoneUrgence());
+        }
+
         return inscriptionResponeDTO;
     }
 

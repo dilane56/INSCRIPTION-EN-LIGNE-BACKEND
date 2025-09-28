@@ -11,4 +11,5 @@ public interface AdminService {
     public AdminResponseDTO createAdmin(AdminRequestDTO adminDTO);
     public AdminResponseDTO updateAdmin(AdminRequestDTO adminDTO, Long id);
     public String deleteAdmin(Long id);
+    public List<org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatResponseDTO> getAllCandidatsForAdmin();
 }

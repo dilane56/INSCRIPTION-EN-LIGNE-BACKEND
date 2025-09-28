@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface FormationService {
     public FormationResponseDTO createFormation(FormationRequestDTO formationRequestDTO);
-    public FormationResponseDTO updateFormation(FormationRequestDTO formationRequestDTO,Long id);
-    public String deleteFormation(Long id);
+    public FormationResponseDTO updateFormation(Long id, FormationRequestDTO formationRequestDTO);
+    public void deleteFormation(Long id);
     public FormationResponseDTO getFormationById(Long id);
     public List<FormationResponseDTO> getAllFormations();
 }

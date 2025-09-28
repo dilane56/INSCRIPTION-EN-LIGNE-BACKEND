@@ -12,5 +12,9 @@ public interface InscriptionService {
     public String delete(Long id);
     public List<InscriptionResponeDTO> findAll();
     public List<InscriptionResponeDTO> getInscriptionsByCandidat(Long candidatId);
+    public void updateEtapeActuelle(Long inscriptionId, Integer etape);
+    public List<InscriptionResponeDTO> getRecentInscriptions(int limit);
+    public void updateStatut(Long inscriptionId, String statut, String commentaire);
+    public void markEtapeComplete(Long inscriptionId, Integer etape);
 
 }

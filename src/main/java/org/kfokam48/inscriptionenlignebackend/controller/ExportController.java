@@ -39,4 +39,14 @@ public class ExportController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(resource);
     }
+    
+    @GetMapping("/statistiques/rapport")
+    public ResponseEntity<ByteArrayResource> exportStatistiquesRapport() {
+        ByteArrayResource resource = exportService.exportStatistiquesRapport();
+        
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=rapport-statistiques.txt")
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(resource);
+    }
 }

@@ -13,4 +13,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     boolean existsByHashDocumentAndInscription_Candidat_Id(String hash, Long candidatId);
     List<Document> findByTypeDocumentAndInscriptionId(TypeDocument type, Long inscriptionId);
     List<Document> findByValideAndInscription_Statut(Boolean valide, org.kfokam48.inscriptionenlignebackend.enums.StatutInscription statut);
+    java.util.Optional<Document> findByInscriptionAndTypeDocument(org.kfokam48.inscriptionenlignebackend.model.Inscription inscription, TypeDocument typeDocument);
+    List<Document> findByStatutValidationIsNull();
 }

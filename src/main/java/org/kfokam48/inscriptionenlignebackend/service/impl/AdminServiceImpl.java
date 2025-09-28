@@ -11,6 +11,9 @@ import org.kfokam48.inscriptionenlignebackend.model.Admin;
 import org.kfokam48.inscriptionenlignebackend.repository.AdminRepository;
 import org.kfokam48.inscriptionenlignebackend.repository.UserRepository;
 import org.kfokam48.inscriptionenlignebackend.service.AdminService;
+import org.kfokam48.inscriptionenlignebackend.repository.CandidatRepository;
+import org.kfokam48.inscriptionenlignebackend.mapper.CandidatMapper;
+import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatResponseDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +25,17 @@ public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
     private final AdminMapper adminMapper;
+    private final CandidatRepository candidatRepository;
+    private final CandidatMapper candidatMapper;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    public AdminServiceImpl(UserRepository userRepository, AdminRepository adminRepository, AdminMapper adminMapper) {
+    public AdminServiceImpl(UserRepository userRepository, AdminRepository adminRepository, AdminMapper adminMapper, CandidatRepository candidatRepository, CandidatMapper candidatMapper) {
         this.userRepository = userRepository;
         this.adminRepository = adminRepository;
         this.adminMapper = adminMapper;
+        this.candidatRepository = candidatRepository;
+        this.candidatMapper = candidatMapper;
     }
 
     @Override
@@ -78,5 +85,10 @@ public class AdminServiceImpl implements AdminService {
         Admin admin = adminRepository.findById(id).orElseThrow(()-> new RessourceNotFoundException("Admin not found"));
         adminRepository.delete(admin);
         return "Admin deleted Successfully";
+    }
+
+    @Override
+    public List<CandidatResponseDTO> getAllCandidatsForAdmin() {
+        return candidatMapper.candidatListToCandidatResponseDTOList(candidatRepository.findAll());
     }
 }

@@ -2,6 +2,7 @@ package org.kfokam48.inscriptionenlignebackend.repository;
 
 import org.kfokam48.inscriptionenlignebackend.enums.StatutInscription;
 import org.kfokam48.inscriptionenlignebackend.model.Inscription;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,8 +13,10 @@ import java.util.List;
 @Repository
 public interface InscriptionRepository extends JpaRepository<Inscription, Long> {
     List<Inscription> findByCandidatId(Long candidatId);
+    List<Inscription> findAllByOrderByDateCreationDesc(Pageable pageable);
     List<Inscription> findByStatut(StatutInscription statut);
-    List<Inscription> findByStatutAndDerniereModificationBefore(StatutInscription statut, LocalDateTime date);
+
+    List<Inscription> findByStatutAndDerniereModificationBefore(StatutInscription statut, LocalDateTime derniereModificationBefore);
     
     @Query("SELECT COUNT(i) FROM Inscription i WHERE i.statut = ?1")
     long countByStatut(StatutInscription statut);

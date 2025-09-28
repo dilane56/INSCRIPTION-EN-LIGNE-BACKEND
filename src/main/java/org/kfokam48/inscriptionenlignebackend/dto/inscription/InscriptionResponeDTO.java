@@ -26,4 +26,12 @@ public class InscriptionResponeDTO {
     private String adminValidateurNom;
     private List<DocumentInInscription> documents;
     private LocalDateTime derniereModification;
+
+    // Coordonnées du candidat (exposées pour affichage côté frontend)
+    private String adresse;
+    private String ville;
+    private String codePostal;
+    private String pays;
+    private String contactPourUrgence;
+    private String telephoneUrgence;
 }

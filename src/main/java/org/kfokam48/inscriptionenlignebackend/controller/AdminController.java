@@ -41,4 +41,6 @@ public class AdminController {
     public String deleteAdmin(@PathVariable Long id) {
         return adminService.deleteAdmin(id);
     }
+
+
 }

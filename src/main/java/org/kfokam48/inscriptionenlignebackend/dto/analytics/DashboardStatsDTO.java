@@ -2,16 +2,17 @@ package org.kfokam48.inscriptionenlignebackend.dto.analytics;
 
 import lombok.Data;
 
-import java.util.Map;
-
 @Data
 public class DashboardStatsDTO {
-    private long totalInscriptions;
-    private long inscriptionsValidees;
-    private long inscriptionsEnAttente;
-    private long inscriptionsRejetees;
-    private double tauxValidation;
-    private Map<String, Long> inscriptionsParFormation;
-    private Map<Integer, Long> completionParEtape;
-    private Map<String, Long> inscriptionsParMois;
+    private Long totalInscriptions;
+    private Long inscriptionsEnAttente;
+    private Long inscriptionsValidees;
+    private Long inscriptionsRejetees;
+    private Long totalCandidats;
+    private Long totalFormations;
+    private Double tauxValidation;
+    private Long inscriptionsAujourdhui;
+    private java.util.Map<String, Long> inscriptionsParFormation;
+    private java.util.Map<Integer, Long> completionParEtape;
+    private java.util.Map<String, Long> inscriptionsParMois;
 }

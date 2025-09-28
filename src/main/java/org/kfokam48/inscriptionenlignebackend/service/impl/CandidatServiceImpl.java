@@ -3,6 +3,7 @@ package org.kfokam48.inscriptionenlignebackend.service.impl;
 import jakarta.transaction.Transactional;
 import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatRequestDTO;
 import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatResponseDTO;
+import org.kfokam48.inscriptionenlignebackend.dto.candidat.CoordonneesDTO;
 import org.kfokam48.inscriptionenlignebackend.enums.Roles;
 import org.kfokam48.inscriptionenlignebackend.exception.RessourceAlreadyExistException;
 import org.kfokam48.inscriptionenlignebackend.exception.RessourceNotFoundException;
@@ -89,5 +90,33 @@ public class CandidatServiceImpl implements CandidatService {
     @Override
     public List<CandidatResponseDTO> getAllCandidats() {
         return candidatMapper.candidatListToCandidatResponseDTOList(candidatRepository.findAll());
+    }
+    
+    @Override
+    public void updateCoordonnees(Long candidatId, CoordonneesDTO coordonneesData) {
+        Candidat candidat = candidatRepository.findById(candidatId)
+            .orElseThrow(() -> new RessourceNotFoundException("Candidat not found"));
+        
+        // Mettre à jour uniquement les coordonnées
+        if (coordonneesData.getAdresse() != null) {
+            candidat.setAdresse(coordonneesData.getAdresse());
+        }
+        if (coordonneesData.getVille() != null) {
+            candidat.setVille(coordonneesData.getVille());
+        }
+        if (coordonneesData.getCodePostal() != null) {
+            candidat.setCodePostal(coordonneesData.getCodePostal());
+        }
+        if (coordonneesData.getPays() != null) {
+            candidat.setPays(coordonneesData.getPays());
+        }
+        if (coordonneesData.getContactPourUrgence() != null) {
+            candidat.setContactPourUrgence(coordonneesData.getContactPourUrgence());
+        }
+        if (coordonneesData.getTelephoneUrgence() != null) {
+            candidat.setTelephoneUrgence(coordonneesData.getTelephoneUrgence());
+        }
+        
+        candidatRepository.save(candidat);
     }
 }

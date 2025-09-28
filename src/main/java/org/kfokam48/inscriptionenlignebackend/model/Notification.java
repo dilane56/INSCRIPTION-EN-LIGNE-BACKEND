@@ -4,40 +4,35 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.kfokam48.inscriptionenlignebackend.enums.TypeNotification;
 
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Enumerated(EnumType.STRING)
-    private TypeNotification type;
-    
     private String titre;
-    private String contenu;
-    private String destinataire; // email ou téléphone
-    private String statut = "EN_ATTENTE"; // EN_ATTENTE, ENVOYE, ECHEC
-    private String messageErreur;
     
-    private LocalDateTime dateCreation = LocalDateTime.now();
-    private LocalDateTime dateEnvoi;
-    private LocalDateTime dateLecture;
+    @Column(columnDefinition = "TEXT")
+    private String message;
+    
+    private String type; // DOCUMENT_VALIDE, DOCUMENT_REJETE, DOSSIER_VALIDE, DOSSIER_REJETE
+    
+    private Long candidatId;
     
     private Boolean lue = false;
     
+    private LocalDateTime dateCreation = LocalDateTime.now();
+    
+    private LocalDateTime dateLecture;
+
+    // Relation vers Inscription — correspond au mappedBy = "inscription" dans Inscription.notifications
     @ManyToOne
     @JoinColumn(name = "inscription_id")
     private Inscription inscription;
-    
-    @ManyToOne
-    @JoinColumn(name = "candidat_id")
-    private Candidat candidat;
 }
-

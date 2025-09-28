@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class FiliereRequestDTO {
-    private String libelle;
+    private String nomFiliere;
 }

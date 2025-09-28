@@ -33,13 +33,15 @@ public class Document {
     private String commentaireValidation;
     private LocalDateTime dateUpload = LocalDateTime.now();
     private LocalDateTime dateValidation;
+    private String statutValidation;
     
     @ManyToOne
     @JoinColumn(name = "inscription_id")
     private Inscription inscription;
     
     @ManyToOne
-    @JoinColumn(name = "admin_validateur_id")
+    @JoinColumn(name = "admin_validateur_id",nullable = true)
+
     private Admin adminValidateur;
 }
 

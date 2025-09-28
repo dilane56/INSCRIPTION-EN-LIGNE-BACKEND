@@ -44,7 +44,14 @@ public class SchedulerServiceImpl implements SchedulerService {
         
         inscriptionsEnRetard.forEach(inscription -> {
             if (inscription.getPourcentageCompletion() < 100) {
-                notificationService.envoyerRappelInscription(inscription);
+                // Utiliser l'API existante de NotificationService
+                if (inscription.getCandidat() != null && inscription.getCandidat().getId() != null) {
+                    Long candidatId = inscription.getCandidat().getId();
+                    String titre = "Rappel : finalisez votre inscription";
+                    String message = "Votre dossier d'inscription (id=" + inscription.getId() + ") est incomplet. Merci de le finaliser.";
+                    String type = "RAPPEL";
+                    notificationService.createNotification(candidatId, titre, message, type);
+                }
             }
         });
     }

@@ -43,4 +43,23 @@ public class DocumentController {
         DocumentResponseDTO document = documentService.getDocument(id);
         return ResponseEntity.ok(document);
     }
+    
+    @GetMapping("/admin/pending")
+    public ResponseEntity<List<DocumentResponseDTO>> getPendingDocuments() {
+        List<DocumentResponseDTO> documents = documentService.getPendingDocuments();
+        return ResponseEntity.ok(documents);
+    }
+    
+    @PutMapping("/admin/{id}/validate")
+    public ResponseEntity<String> validateDocument(
+            @PathVariable Long id,
+            @RequestBody java.util.Map<String, String> request) {
+        
+        String statut = request.get("statut");
+        String commentaire = request.get("commentaire");
+        
+        documentService.validateDocument(id, statut, commentaire);
+        
+        return ResponseEntity.ok("Document validé avec succès");
+    }
 }

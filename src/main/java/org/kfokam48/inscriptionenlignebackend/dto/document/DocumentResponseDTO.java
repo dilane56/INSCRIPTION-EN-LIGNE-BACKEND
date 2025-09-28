@@ -19,4 +19,10 @@ public class DocumentResponseDTO {
     private LocalDateTime dateValidation;
     private String adminValidateurNom;
     private Long inscriptionId;
+    private String statutValidation;
+    private String cheminFichier; // Pour MinIO - URL longue
+    private String nomCandidat;
+    private String prenomCandidat;
+    private String candidatEmail;
+    private String formationName;
 }

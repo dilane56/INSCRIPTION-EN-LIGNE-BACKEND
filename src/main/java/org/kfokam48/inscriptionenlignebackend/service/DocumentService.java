@@ -14,4 +14,6 @@ public interface DocumentService {
     public DocumentResponseDTO deleteDocument(Long id);
     public List<DocumentResponseDTO> getAllDocuments();
     void storeDocument(MultipartFile file, String type, Long inscriptionId);
+    List<DocumentResponseDTO> getPendingDocuments();
+    void validateDocument(Long id, String statut, String commentaire);
 }

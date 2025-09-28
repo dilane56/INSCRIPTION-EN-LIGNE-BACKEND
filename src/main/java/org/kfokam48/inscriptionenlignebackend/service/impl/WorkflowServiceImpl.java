@@ -51,8 +51,14 @@ public class WorkflowServiceImpl implements WorkflowService {
         inscription.setDerniereModification(LocalDateTime.now());
         inscriptionRepository.save(inscription);
         
-        // Envoyer notification de soumission
-        notificationService.envoyerNotificationSoumission(inscription);
+        // Envoyer notification de soumission via l'API existante
+        if (inscription.getCandidat() != null && inscription.getCandidat().getId() != null) {
+            Long candidatId = inscription.getCandidat().getId();
+            String titre = "Inscription soumise";
+            String message = "Votre inscription (id=" + inscription.getId() + ") a été soumise avec succès.";
+            String type = "INFO";
+            notificationService.createNotification(candidatId, titre, message, type);
+        }
     }
 
     @Override
@@ -63,16 +69,28 @@ public class WorkflowServiceImpl implements WorkflowService {
         inscription.setDateValidation(LocalDateTime.now());
         inscriptionRepository.save(inscription);
         
-        // Envoyer notification de validation
-        notificationService.envoyerNotificationValidation(inscription);
+        // Envoyer notification de validation via l'API existante
+        if (inscription.getCandidat() != null && inscription.getCandidat().getId() != null) {
+            Long candidatId = inscription.getCandidat().getId();
+            String titre = "Inscription validée";
+            String message = "Félicitations — votre inscription (id=" + inscription.getId() + ") a été validée.";
+            String type = "SUCCESS";
+            notificationService.createNotification(candidatId, titre, message, type);
+        }
     }
 
     @Override
     public void rejeterInscription(Long inscriptionId, Long adminId, String commentaire) {
         changerStatut(inscriptionId, StatutInscription.REJETEE, commentaire, adminId);
         
-        // Envoyer notification de rejet
+        // Envoyer notification de rejet via l'API existante
         Inscription inscription = inscriptionRepository.findById(inscriptionId).orElseThrow();
-        notificationService.envoyerNotificationRejet(inscription);
+        if (inscription.getCandidat() != null && inscription.getCandidat().getId() != null) {
+            Long candidatId = inscription.getCandidat().getId();
+            String titre = "Inscription rejetée";
+            String message = "Votre inscription (id=" + inscription.getId() + ") a été rejetée. Motif: " + (commentaire == null ? "-" : commentaire);
+            String type = "ALERT";
+            notificationService.createNotification(candidatId, titre, message, type);
+        }
     }
 }

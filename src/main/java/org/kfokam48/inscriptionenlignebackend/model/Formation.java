@@ -20,15 +20,11 @@ public class Formation {
 
     private String nomFormation;
     private String etablissement;
-    private String specialite;
     private String description;
     private Integer duree; // en mois
     private Double prix;
     private String prerequis;
-    
-    @ManyToOne
-    @JoinColumn(name = "niveau_id")
-    private Niveau niveau;
+
 
     @OneToMany(mappedBy = "formation")
     @JsonIgnore
