@@ -44,13 +44,21 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<Map<String, Object>> getCurrentUser(HttpServletRequest request) {
         String token = extractTokenFromRequest(request);
+        
         if (token == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(401).body(Map.of("error", "Token manquant"));
         }
         
         try {
             String email = authService.getEmailFromToken(token);
-            User user = authService.getUserByEmail(email);
+            
+            User user;
+            try {
+                user = authService.getUserByEmail(email);
+            } catch (Exception e) {
+                // Créer automatiquement l'utilisateur OAuth2 s'il n'existe pas
+                user = authService.createOAuth2User(email);
+            }
             
             Map<String, Object> userInfo = new HashMap<>();
             userInfo.put("id", user.getId());
@@ -61,7 +69,7 @@ public class AuthController {
             
             return ResponseEntity.ok(userInfo);
         } catch (Exception e) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(401).body(Map.of("error", "Token invalide"));
         }
     }
     

@@ -36,11 +36,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         
         User user = processOAuth2User(provider, providerId, email, firstName, lastName, imageUrl, emailVerified);
         
-        // Retourner un CustomUserDetails pour que le SuccessHandler fonctionne
-        return new CustomUserDetails(user);
+        // Pour l'instant, retourner l'OAuth2User original pour que Spring Security fonctionne
+        // Le SuccessHandler extraira l'email directement
+        return oauth2User;
     }
     
-    private User processOAuth2User(String provider, String providerId, String email, 
+    private synchronized User processOAuth2User(String provider, String providerId, String email, 
                                   String firstName, String lastName, String imageUrl, Boolean emailVerified) {
         
         Optional<User> userOptional = userRepository.findByEmail(email);
@@ -58,17 +59,35 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return existingUser;
         } else {
             // Créer un nouveau candidat
-            Candidat newCandidat = new Candidat();
-            newCandidat.setFirstName(firstName);
-            newCandidat.setLastName(lastName);
-            newCandidat.setEmail(email);
-            newCandidat.setProvider(provider);
-            newCandidat.setProviderId(providerId);
-            newCandidat.setImageUrl(imageUrl);
-            newCandidat.setEmailVerified(emailVerified);
-            newCandidat.setRole(Roles.CANDIDAT);
-            
-            return userRepository.save(newCandidat);
+            try {
+                Candidat newCandidat = new Candidat();
+                newCandidat.setFirstName(firstName != null ? firstName : "");
+                newCandidat.setLastName(lastName != null ? lastName : "");
+                newCandidat.setEmail(email);
+                newCandidat.setProvider(provider);
+                newCandidat.setProviderId(providerId);
+                newCandidat.setImageUrl(imageUrl);
+                newCandidat.setEmailVerified(emailVerified != null ? emailVerified : false);
+                newCandidat.setRole(Roles.CANDIDAT);
+                
+                // Initialiser les champs obligatoires avec des valeurs vides
+                newCandidat.setNationalite("");
+                newCandidat.setTypeDePieceIdentite("");
+                newCandidat.setNumeroPieceIdentite("");
+                newCandidat.setAdresse("");
+                newCandidat.setVille("");
+                newCandidat.setCodePostal("");
+                newCandidat.setPays("");
+                newCandidat.setContactPourUrgence("");
+                newCandidat.setTelephoneUrgence("");
+                
+                return userRepository.save(newCandidat);
+            } catch (org.springframework.dao.DataIntegrityViolationException e) {
+                // Contrainte unique violée - l'utilisateur a été créé par une autre requête
+                // Récupérer l'utilisateur existant
+                return userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Utilisateur introuvable après création"));
+            }
         }
     }
 }

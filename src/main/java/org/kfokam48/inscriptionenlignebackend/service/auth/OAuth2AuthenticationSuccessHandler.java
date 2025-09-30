@@ -32,30 +32,32 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                                       Authentication authentication) throws IOException {
         
         Object principal = authentication.getPrincipal();
-        String username;
+        String email;
         
         if (principal instanceof CustomUserDetails) {
-            username = ((CustomUserDetails) principal).getUsername();
-            System.out.println("Utilisateur OAuth2 authentifié: " + username);
+            email = ((CustomUserDetails) principal).getUsername();
+        } else if (principal instanceof org.springframework.security.oauth2.core.user.OAuth2User) {
+            // Extraire l'email depuis OAuth2User
+            org.springframework.security.oauth2.core.user.OAuth2User oauth2User = 
+                (org.springframework.security.oauth2.core.user.OAuth2User) principal;
+            email = oauth2User.getAttribute("email");
         } else {
-            // Fallback pour les autres types d'OAuth2User
-            username = authentication.getName();
-            System.out.println("Type de principal OAuth2: " + principal.getClass().getSimpleName() + ", username: " + username);
+            // Fallback
+            email = authentication.getName();
         }
         
-        // Générer JWT token
+        // Générer JWT token avec l'email
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
         String token = Jwts.builder()
-                .subject(username)
+                .subject(email)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(key)
                 .compact();
         
         // Rediriger vers le frontend avec le token
-        String targetUrl = redirectUri + "?token=" + token + "&email=" + username;
+        String targetUrl = redirectUri + "?token=" + token + "&email=" + email;
         
-        System.out.println("Redirection OAuth2 vers: " + targetUrl);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 }

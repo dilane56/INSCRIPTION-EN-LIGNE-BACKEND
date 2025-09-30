@@ -63,10 +63,11 @@ public class JwtRequestFillter extends OncePerRequestFilter {
         String jwt = null;
         String userEmail = null;
         String path = request.getRequestURI();
+        
 
-        // Ignorer les endpoints publics (ex: /api/auth/login, /api/auth/register, /oauth2/, /login/oauth2/)
-        if (path.startsWith("/api/auth/") || path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/") || 
-            path.startsWith("/oauth2-debug/") || path.startsWith("/oauth2-test/") || path.equals("/login")) {
+
+        // Ignorer les endpoints publics (ex: /api/auth/login, /api/auth/me, /oauth2/, /login/oauth2/)
+        if (path.startsWith("/api/auth/") || path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/") || path.equals("/login")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -89,17 +90,18 @@ public class JwtRequestFillter extends OncePerRequestFilter {
 
             // Authentifier si le token est valide et l'utilisateur n'est pas déjà authentifié
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+                try {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
-                // Vérifier si le token est valide pour l'utilisateur (optionnel mais recommandé pour des validations plus poussées)
-                // Par exemple, vérifier si l'utilisateur est actif, etc.
-                // Pour l'instant, nous nous basons sur la validité de la signature et l'existence de l'utilisateur.
-
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                logger.debug("Utilisateur {} authentifié via JWT.", userEmail);
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    logger.debug("Utilisateur {} authentifié via JWT pour le chemin {}.", userEmail, path);
+                } catch (org.springframework.security.core.userdetails.UsernameNotFoundException e) {
+                    // Utilisateur OAuth2 non trouvé - laisser passer pour que le contrôleur gère
+                    logger.warn("Utilisateur OAuth2 {} non trouvé en base pour le chemin {}. Laissé au contrôleur.", userEmail, path);
+                }
             }
 
             // Laisser la requête continuer vers le prochain filtre de la chaîne

@@ -115,6 +115,47 @@ public class AuthService {
         return UserRepository.findByEmail(email)
                 .orElseThrow(() -> new RessourceNotFoundException("User not found"));
     }
+    
+    public synchronized User createOAuth2User(String email) {
+        // Vérifier une dernière fois si l'utilisateur existe
+        try {
+            return getUserByEmail(email);
+        } catch (Exception e) {
+            // L'utilisateur n'existe pas, le créer
+        }
+        
+        try {
+            // Créer un candidat OAuth2 avec les informations minimales
+            org.kfokam48.inscriptionenlignebackend.model.Candidat newCandidat = 
+                new org.kfokam48.inscriptionenlignebackend.model.Candidat();
+            
+            // Extraire le prénom du nom d'utilisateur de l'email (avant @)
+            String username = email.split("@")[0];
+            
+            newCandidat.setEmail(email);
+            newCandidat.setFirstName(username);
+            newCandidat.setLastName("");
+            newCandidat.setProvider("google");
+            newCandidat.setEmailVerified(true);
+            newCandidat.setRole(org.kfokam48.inscriptionenlignebackend.enums.Roles.CANDIDAT);
+            
+            // Initialiser les champs obligatoires
+            newCandidat.setNationalite("");
+            newCandidat.setTypeDePieceIdentite("");
+            newCandidat.setNumeroPieceIdentite("");
+            newCandidat.setAdresse("");
+            newCandidat.setVille("");
+            newCandidat.setCodePostal("");
+            newCandidat.setPays("");
+            newCandidat.setContactPourUrgence("");
+            newCandidat.setTelephoneUrgence("");
+            
+            return UserRepository.save(newCandidat);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            // Contrainte unique violée - récupérer l'utilisateur existant
+            return getUserByEmail(email);
+        }
+    }
 
 
 
