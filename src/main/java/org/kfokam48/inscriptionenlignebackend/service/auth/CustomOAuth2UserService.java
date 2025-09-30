@@ -36,7 +36,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         
         User user = processOAuth2User(provider, providerId, email, firstName, lastName, imageUrl, emailVerified);
         
-        return oauth2User; // Retourner directement l'OAuth2User
+        // Retourner un CustomUserDetails pour que le SuccessHandler fonctionne
+        return new CustomUserDetails(user);
     }
     
     private User processOAuth2User(String provider, String providerId, String email, 

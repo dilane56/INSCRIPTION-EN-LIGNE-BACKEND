@@ -30,8 +30,22 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
         this.user = user;
         this.username = user.getEmail();
         this.password = null;
-        this.authorities = null; // À implémenter selon les rôles
+        this.authorities = java.util.List.of(() -> "ROLE_" + user.getRole().name());
         this.attributes = attributes;
+    }
+    
+    // Constructeur simplifié pour OAuth2 (sans attributes)
+    public CustomUserDetails(User user) {
+        this.user = user;
+        this.username = user.getEmail();
+        this.password = null;
+        this.authorities = java.util.List.of(() -> "ROLE_" + user.getRole().name());
+        this.attributes = java.util.Map.of(
+            "sub", user.getProviderId() != null ? user.getProviderId() : user.getId().toString(),
+            "email", user.getEmail(),
+            "given_name", user.getFirstName(),
+            "family_name", user.getLastName()
+        );
     }
 
     @Override

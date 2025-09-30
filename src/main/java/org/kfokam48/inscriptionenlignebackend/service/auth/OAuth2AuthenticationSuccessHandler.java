@@ -36,8 +36,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         
         if (principal instanceof CustomUserDetails) {
             username = ((CustomUserDetails) principal).getUsername();
+            System.out.println("Utilisateur OAuth2 authentifié: " + username);
         } else {
-            username = principal.toString();
+            // Fallback pour les autres types d'OAuth2User
+            username = authentication.getName();
+            System.out.println("Type de principal OAuth2: " + principal.getClass().getSimpleName() + ", username: " + username);
         }
         
         // Générer JWT token
@@ -52,6 +55,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // Rediriger vers le frontend avec le token
         String targetUrl = redirectUri + "?token=" + token + "&email=" + username;
         
+        System.out.println("Redirection OAuth2 vers: " + targetUrl);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 }
