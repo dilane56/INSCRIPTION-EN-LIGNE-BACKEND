@@ -27,6 +27,7 @@ public class Candidat extends User {
     private String pays;
     private String contactPourUrgence;
     private String telephoneUrgence;
+    private String phone;
     private Sexe sexe;
     private LocalDateTime dateCreation = LocalDateTime.now();
     private LocalDateTime derniereConnexion;

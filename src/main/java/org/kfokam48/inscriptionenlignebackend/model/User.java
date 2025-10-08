@@ -21,7 +21,7 @@ public abstract class User {
     private String password;
     @Column(unique = true)
     private String email;
-    private String phone;
+
     
     // OAuth2 fields
     private String provider; // "local", "google", "microsoft"

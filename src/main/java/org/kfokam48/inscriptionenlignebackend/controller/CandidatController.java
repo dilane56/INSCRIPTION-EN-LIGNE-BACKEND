@@ -2,6 +2,8 @@ package org.kfokam48.inscriptionenlignebackend.controller;
 
 import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatRequestDTO;
 import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatResponseDTO;
+import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatProfileUpdateDTO;
+import org.kfokam48.inscriptionenlignebackend.dto.candidat.CandidatBasicInfoDTO;
 import org.kfokam48.inscriptionenlignebackend.dto.inscription.InscriptionResponeDTO;
 import org.kfokam48.inscriptionenlignebackend.model.User;
 import org.kfokam48.inscriptionenlignebackend.service.CandidatService;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/candidats")
+@CrossOrigin("*")
 public class CandidatController {
     
     private final CandidatService candidatService;
@@ -49,5 +52,25 @@ public class CandidatController {
         User user = authService.getUserByEmail(email);
         List<InscriptionResponeDTO> inscriptions = inscriptionService.getInscriptionsByCandidat(user.getId());
         return ResponseEntity.ok(inscriptions);
+    }
+    
+    @PutMapping("/profile")
+    public ResponseEntity<String> updateProfile(
+            @RequestBody CandidatProfileUpdateDTO profileUpdateDTO,
+            Authentication authentication) {
+        String email = authentication.getName();
+        User user = authService.getUserByEmail(email);
+        candidatService.updateProfile(user.getId(), profileUpdateDTO);
+        return ResponseEntity.ok("Profil mis à jour avec succès");
+    }
+    
+    @PutMapping("/basic-info")
+    public ResponseEntity<String> updateBasicInfo(
+            @RequestBody CandidatBasicInfoDTO basicInfoDTO,
+            Authentication authentication) {
+        String email = authentication.getName();
+        User user = authService.getUserByEmail(email);
+        candidatService.updateBasicInfo(user.getId(), basicInfoDTO);
+        return ResponseEntity.ok("Informations de base mises à jour avec succès");
     }
 }
