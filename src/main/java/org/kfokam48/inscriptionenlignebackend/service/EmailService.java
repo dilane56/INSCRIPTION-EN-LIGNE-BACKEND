@@ -8,4 +8,5 @@ public interface EmailService {
     void envoyerEmailRejet(Inscription inscription);
     void envoyerEmailRappel(Inscription inscription);
     void envoyerEmailBienvenue(String email, String nom);
+    void sendEmailVerification(String email, String code);
 }

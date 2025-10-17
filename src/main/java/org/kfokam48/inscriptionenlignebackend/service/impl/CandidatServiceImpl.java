@@ -117,6 +117,9 @@ public class CandidatServiceImpl implements CandidatService {
         if (coordonneesData.getTelephoneUrgence() != null) {
             candidat.setTelephoneUrgence(coordonneesData.getTelephoneUrgence());
         }
+        if (coordonneesData.getTelephone() != null) {
+            candidat.setTelephone(coordonneesData.getTelephone());
+        }
         
         candidatRepository.save(candidat);
     }
@@ -134,8 +137,8 @@ public class CandidatServiceImpl implements CandidatService {
         }
         
         // Mettre à jour les informations Candidat
-        if (profileData.getPhone() != null) {
-            candidat.setPhone(profileData.getPhone());
+        if (profileData.getTelephone() != null) {
+            candidat.setTelephone(profileData.getTelephone());
         }
         if (profileData.getDateNaissance() != null) {
             candidat.setDateNaissance(profileData.getDateNaissance());
@@ -143,12 +146,7 @@ public class CandidatServiceImpl implements CandidatService {
         if (profileData.getNationalite() != null) {
             candidat.setNationalite(profileData.getNationalite());
         }
-        if (profileData.getTypeDePieceIdentite() != null) {
-            candidat.setTypeDePieceIdentite(profileData.getTypeDePieceIdentite());
-        }
-        if (profileData.getNumeroPieceIdentite() != null) {
-            candidat.setNumeroPieceIdentite(profileData.getNumeroPieceIdentite());
-        }
+
         if (profileData.getAdresse() != null) {
             candidat.setAdresse(profileData.getAdresse());
         }

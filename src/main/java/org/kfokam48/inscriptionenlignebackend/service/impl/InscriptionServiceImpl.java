@@ -62,6 +62,7 @@ public class InscriptionServiceImpl  implements InscriptionService {
     
     private void initializerEtapes(Inscription inscription) {
         String[] nomsEtapes = {
+            "Choix de Formation",
             "Informations Personnelles",
             "Documents Officiels", 
             "Parcours Académique",
@@ -130,10 +131,10 @@ public class InscriptionServiceImpl  implements InscriptionService {
         long etapesCompletees = inscription.getEtapes().stream()
             .mapToLong(e -> e.getCompletee() ? 1 : 0)
             .sum();
-        inscription.setPourcentageCompletion((double) etapesCompletees / 5 * 100);
+        inscription.setPourcentageCompletion((double) etapesCompletees / 6 * 100);
         
         // Mettre à jour le statut si toutes les étapes sont complétées
-        if (etapesCompletees == 5 && inscription.getStatut() == StatutInscription.BROUILLON) {
+        if (etapesCompletees == 6 && inscription.getStatut() == StatutInscription.BROUILLON) {
             inscription.setStatut(StatutInscription.SOUMISE);
             inscription.setDateSoumission(LocalDateTime.now());
         }
@@ -209,10 +210,10 @@ public class InscriptionServiceImpl  implements InscriptionService {
         long etapesCompletees = inscription.getEtapes().stream()
             .mapToLong(e -> e.getCompletee() ? 1 : 0)
             .sum();
-        inscription.setPourcentageCompletion((double) etapesCompletees / 5 * 100);
+        inscription.setPourcentageCompletion((double) etapesCompletees / 6 * 100);
         
         // Mettre à jour le statut si toutes les étapes sont complétées
-        if (etapesCompletees == 5 && inscription.getStatut() == StatutInscription.BROUILLON) {
+        if (etapesCompletees == 6 && inscription.getStatut() == StatutInscription.BROUILLON) {
             inscription.setStatut(StatutInscription.SOUMISE);
             inscription.setDateSoumission(LocalDateTime.now());
         }

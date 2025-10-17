@@ -72,8 +72,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 
                 // Initialiser les champs obligatoires avec des valeurs vides
                 newCandidat.setNationalite("");
-                newCandidat.setTypeDePieceIdentite("");
-                newCandidat.setNumeroPieceIdentite("");
+                newCandidat.setTelephone("");
                 newCandidat.setAdresse("");
                 newCandidat.setVille("");
                 newCandidat.setCodePostal("");

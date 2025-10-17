@@ -5,8 +5,15 @@ import jakarta.validation.Valid;
 
 import org.kfokam48.inscriptionenlignebackend.dto.auth.LoginRequest;
 import org.kfokam48.inscriptionenlignebackend.dto.auth.LoginResponse;
+import org.kfokam48.inscriptionenlignebackend.dto.auth.EmailVerificationDTO;
+import org.kfokam48.inscriptionenlignebackend.dto.auth.VerifyCodeDTO;
 import org.kfokam48.inscriptionenlignebackend.model.User;
 import org.kfokam48.inscriptionenlignebackend.service.auth.AuthService;
+import org.kfokam48.inscriptionenlignebackend.service.EmailService;
+import org.springframework.security.core.Authentication;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.time.LocalDateTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +22,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin("*")
 public class AuthController {
 
-
     private final AuthService authService;
+    private final EmailService emailService;
+    private final ConcurrentHashMap<String, String> verificationCodes = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, LocalDateTime> codeExpiry = new ConcurrentHashMap<>();
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, EmailService emailService) {
         this.authService = authService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/login")
@@ -87,5 +98,75 @@ public class AuthController {
             return xForwardedFor.split(",")[0].trim();
         }
         return request.getRemoteAddr();
+    }
+    
+    @PostMapping("/send-verification")
+    public ResponseEntity<Map<String, String>> sendEmailVerification(
+            @RequestBody EmailVerificationDTO emailDto,
+            Authentication authentication) {
+        try {
+            String email = authentication.getName();
+            User user = authService.getUserByEmail(email);
+            
+            // Vérifier si l'email est déjà vérifié
+            if (user.getEmailVerified()) {
+                return ResponseEntity.ok(Map.of("message", "Email déjà vérifié"));
+            }
+            
+            // Générer un code à 6 chiffres
+            String code = String.format("%06d", new Random().nextInt(1000000));
+            
+            // Stocker le code avec expiration (10 minutes)
+            verificationCodes.put(user.getEmail(), code);
+            codeExpiry.put(user.getEmail(), LocalDateTime.now().plusMinutes(10));
+            
+            // Envoyer l'email de vérification
+            emailService.sendEmailVerification(user.getEmail(), code);
+            
+            return ResponseEntity.ok(Map.of("message", "Email de vérification envoyé"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Impossible d'envoyer l'email de vérification"));
+        }
+    }
+    
+    @PostMapping("/verify-code")
+    public ResponseEntity<Map<String, String>> verifyCode(
+            @RequestBody VerifyCodeDTO codeDto,
+            Authentication authentication) {
+        try {
+            String email = authentication.getName();
+            String providedCode = codeDto.getCode();
+            
+            // Vérifier si le code existe et n'est pas expiré
+            String storedCode = verificationCodes.get(email);
+            LocalDateTime expiry = codeExpiry.get(email);
+            
+            if (storedCode == null || expiry == null) {
+                return ResponseEntity.status(400).body(Map.of("error", "Aucun code de vérification trouvé"));
+            }
+            
+            if (LocalDateTime.now().isAfter(expiry)) {
+                verificationCodes.remove(email);
+                codeExpiry.remove(email);
+                return ResponseEntity.status(400).body(Map.of("error", "Code expiré"));
+            }
+            
+            if (!storedCode.equals(providedCode)) {
+                return ResponseEntity.status(400).body(Map.of("error", "Code incorrect"));
+            }
+            
+            // Code valide - marquer l'email comme vérifié
+            User user = authService.getUserByEmail(email);
+            user.setEmailVerified(true);
+            authService.saveUser(user);
+            
+            // Nettoyer les codes
+            verificationCodes.remove(email);
+            codeExpiry.remove(email);
+            
+            return ResponseEntity.ok(Map.of("message", "Email vérifié avec succès"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Erreur lors de la vérification"));
+        }
     }
 }

@@ -10,4 +10,5 @@ public class CoordonneesDTO {
     private String pays;
     private String contactPourUrgence;
     private String telephoneUrgence;
+    private String telephone;
 }

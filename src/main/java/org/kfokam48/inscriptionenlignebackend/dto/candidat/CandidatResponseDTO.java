@@ -12,10 +12,13 @@ public class CandidatResponseDTO extends UserResponseDTO {
     private LocalDate dateNaissance;
     private List<InscriptionInCandidatDTO> inscriptions;
     private String nationalite;
-    private String typeDePieceIdentite;
     private Sexe sexe;
     private String adresse;
-    private String phone;
+    private String telephone;
     private String contactPourUrgence;
+    private String telephoneUrgence;
+    private String ville;
+    private String codePostal;
+    private String pays;
 
 }

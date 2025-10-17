@@ -19,15 +19,13 @@ import java.util.List;
 public class Candidat extends User {
     private LocalDate dateNaissance;
     private String nationalite;
-    private String typeDePieceIdentite;
-    private String numeroPieceIdentite;
     private String adresse;
     private String ville;
     private String codePostal;
     private String pays;
     private String contactPourUrgence;
     private String telephoneUrgence;
-    private String phone;
+    private String telephone;
     private Sexe sexe;
     private LocalDateTime dateCreation = LocalDateTime.now();
     private LocalDateTime derniereConnexion;

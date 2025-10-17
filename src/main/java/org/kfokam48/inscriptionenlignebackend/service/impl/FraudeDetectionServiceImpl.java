@@ -7,7 +7,6 @@ import org.kfokam48.inscriptionenlignebackend.service.NotificationService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Service
@@ -90,7 +89,7 @@ public class FraudeDetectionServiceImpl implements FraudeDetectionService {
         }
         
         // Téléphone invalide
-        String phone = inscription.getCandidat().getPhone();
+        String phone = inscription.getCandidat().getTelephone();
         if (phone != null && !phone.matches("^[+]?[0-9]{8,15}$")) {
             score += 15.0;
         }

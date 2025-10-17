@@ -10,5 +10,6 @@ public class UserResponseDTO {
     private String lastName;
     private String email;
     private Roles role;
+    private Boolean emailVerified;
 
 }

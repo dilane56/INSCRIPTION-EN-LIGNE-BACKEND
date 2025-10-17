@@ -9,11 +9,9 @@ import java.time.LocalDate;
 public class CandidatProfileUpdateDTO {
     private String firstName;
     private String lastName;
-    private String phone;
+    private String telephone;
     private LocalDate dateNaissance;
     private String nationalite;
-    private String typeDePieceIdentite;
-    private String numeroPieceIdentite;
     private String adresse;
     private String ville;
     private String codePostal;

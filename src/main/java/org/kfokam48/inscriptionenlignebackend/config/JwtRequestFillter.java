@@ -66,8 +66,9 @@ public class JwtRequestFillter extends OncePerRequestFilter {
         
 
 
-        // Ignorer les endpoints publics (ex: /api/auth/login, /api/auth/me, /oauth2/, /login/oauth2/)
-        if (path.startsWith("/api/auth/") || path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/") || path.equals("/login")) {
+        // Ignorer les endpoints publics spécifiques
+        if (path.equals("/api/auth/login") || path.equals("/api/auth/me") || 
+            path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/") || path.equals("/login")) {
             filterChain.doFilter(request, response);
             return;
         }

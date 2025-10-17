@@ -116,6 +116,10 @@ public class AuthService {
                 .orElseThrow(() -> new RessourceNotFoundException("User not found"));
     }
     
+    public void saveUser(User user) {
+        UserRepository.save(user);
+    }
+    
     public synchronized User createOAuth2User(String email) {
         // Vérifier une dernière fois si l'utilisateur existe
         try {
@@ -141,8 +145,7 @@ public class AuthService {
             
             // Initialiser les champs obligatoires
             newCandidat.setNationalite("");
-            newCandidat.setTypeDePieceIdentite("");
-            newCandidat.setNumeroPieceIdentite("");
+            newCandidat.setTelephone("");
             newCandidat.setAdresse("");
             newCandidat.setVille("");
             newCandidat.setCodePostal("");

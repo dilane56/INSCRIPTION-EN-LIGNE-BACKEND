@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(
-                title = "NOTE MANAGEMENT API",
+                title = "ONLINE INSCRIPTION MANAGEMENT API",
                 version = "1.0",
                 description = "API for managing grade with role-based access control"
         )

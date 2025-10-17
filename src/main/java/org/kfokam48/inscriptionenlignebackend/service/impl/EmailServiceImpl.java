@@ -85,6 +85,18 @@ public class EmailServiceImpl implements EmailService {
         envoyerEmail(email, "Bienvenue sur notre plateforme", contenu);
     }
     
+    @Override
+    public void sendEmailVerification(String email, String code) {
+        String contenu = "Bonjour,\n\n" +
+            "Votre code de vérification est : " + code + "\n\n" +
+            "Saisissez ce code dans l'application pour vérifier votre adresse email.\n" +
+            "Ce code expire dans 10 minutes.\n\n" +
+            "Cordialement,\n" +
+            "L'équipe d'inscription";
+            
+        envoyerEmailSimple(email, "Code de vérification email", contenu);
+    }
+    
     private void envoyerEmail(String destinataire, String sujet, String contenu) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -94,6 +106,22 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(destinataire);
             helper.setSubject(sujet);
             helper.setText(contenu, true);
+            
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Erreur envoi email", e);
+        }
+    }
+    
+    private void envoyerEmailSimple(String destinataire, String sujet, String contenu) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+            
+            helper.setFrom(fromEmail);
+            helper.setTo(destinataire);
+            helper.setSubject(sujet);
+            helper.setText(contenu, false);
             
             mailSender.send(message);
         } catch (MessagingException e) {

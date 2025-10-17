@@ -88,7 +88,7 @@ public class InscriptionController {
         candidatService.updateCoordonnees(user.getId(), coordonneesData);
         
         // Mettre à jour l'étape de l'inscription et marquer comme complétée
-        inscriptionService.updateEtapeActuelle(id, 5);
+        inscriptionService.updateEtapeActuelle(id, 6);
         inscriptionService.markEtapeComplete(id, 5);
         
         return ResponseEntity.ok("Coordonnées mises à jour avec succès");

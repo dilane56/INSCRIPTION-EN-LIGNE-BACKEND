@@ -50,14 +50,17 @@ public class CandidatMapper {
     public CandidatResponseDTO candidatToCandidatResponseDTO(Candidat candidat){
         CandidatResponseDTO candidatResponseDTO = new CandidatResponseDTO();
         candidatResponseDTO.setId(candidat.getId());
+        candidatResponseDTO.setEmailVerified(candidat.getEmailVerified());
         candidatResponseDTO.setFirstName(candidat.getFirstName());
         candidatResponseDTO.setLastName(candidat.getLastName());
         candidatResponseDTO.setEmail(candidat.getEmail());
-        candidatResponseDTO.setPhone(candidat.getPhone());
+        candidatResponseDTO.setTelephone(candidat.getTelephone());
+        candidatResponseDTO.setVille(candidat.getVille());
+        candidatResponseDTO.setCodePostal(candidat.getCodePostal());
+        candidatResponseDTO.setPays(candidat.getPays());
         candidatResponseDTO.setDateNaissance(candidat.getDateNaissance());
         candidatResponseDTO.setRole(candidat.getRole());
         candidatResponseDTO.setNationalite(candidat.getNationalite());
-        candidatResponseDTO.setTypeDePieceIdentite(candidat.getTypeDePieceIdentite());
         candidatResponseDTO.setAdresse(candidat.getAdresse());
         candidatResponseDTO.setContactPourUrgence(candidat.getContactPourUrgence());
         candidatResponseDTO.setSexe(candidat.getSexe());
