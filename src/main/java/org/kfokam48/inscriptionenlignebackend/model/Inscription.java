@@ -59,7 +59,7 @@ public class Inscription {
     @JsonIgnore
     private List<Notification> notifications = new ArrayList<>();
     
-    @OneToMany(mappedBy = "inscription", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inscription", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<EtapeInscription> etapes = new ArrayList<>();
 }
