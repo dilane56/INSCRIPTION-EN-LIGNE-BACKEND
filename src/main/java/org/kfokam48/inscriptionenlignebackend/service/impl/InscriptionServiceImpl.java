@@ -220,4 +220,28 @@ public class InscriptionServiceImpl  implements InscriptionService {
         
         inscriptionRepository.save(inscription);
     }
+    
+    @Override
+    public void recalculateProgress(Long inscriptionId) {
+        Inscription inscription = inscriptionRepository.findById(inscriptionId)
+            .orElseThrow(() -> new RessourceNotFoundException("Inscription Not Found"));
+        
+        // Si l'inscription est à l'étape 6, marquer toutes les étapes comme complétées
+        if (inscription.getEtapeActuelle() == 6) {
+            inscription.getEtapes().forEach(etape -> {
+                etape.setCompletee(true);
+                if (etape.getDateCompletion() == null) {
+                    etape.setDateCompletion(LocalDateTime.now());
+                }
+            });
+        }
+        
+        // Recalculer le pourcentage
+        long etapesCompletees = inscription.getEtapes().stream()
+            .mapToLong(e -> e.getCompletee() ? 1 : 0)
+            .sum();
+        inscription.setPourcentageCompletion((double) etapesCompletees / 6 * 100);
+        
+        inscriptionRepository.save(inscription);
+    }
 }

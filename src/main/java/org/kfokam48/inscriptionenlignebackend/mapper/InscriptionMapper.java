@@ -85,6 +85,7 @@ public class InscriptionMapper {
         inscriptionResponeDTO.setDateCreation(inscription.getDateCreation());
         inscriptionResponeDTO.setDerniereModification(inscription.getDerniereModification());
         inscriptionResponeDTO.setDocuments(documentListToDocumentInInscriptionList(inscription.getDocuments()));
+        inscriptionResponeDTO.setDocumentsApprouves(inscription.getDocumentsApprouves());
 
         // --- Ajout du mapping des coordonnées du candidat ---
         if (inscription.getCandidat() != null) {

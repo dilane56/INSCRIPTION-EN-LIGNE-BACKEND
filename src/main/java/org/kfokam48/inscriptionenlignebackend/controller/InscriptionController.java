@@ -140,4 +140,10 @@ public class InscriptionController {
         
         return ResponseEntity.ok("Étape marquée comme complétée");
     }
+    
+    @PutMapping("/{id}/recalculate-progress")
+    public ResponseEntity<String> recalculateProgress(@PathVariable Long id) {
+        inscriptionService.recalculateProgress(id);
+        return ResponseEntity.ok("Progression recalculée");
+    }
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.kfokam48.inscriptionenlignebackend.enums.TypeDocument;
+import org.kfokam48.inscriptionenlignebackend.enums.StatutValidation;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +34,9 @@ public class Document {
     private String commentaireValidation;
     private LocalDateTime dateUpload = LocalDateTime.now();
     private LocalDateTime dateValidation;
-    private String statutValidation;
+    
+    @Enumerated(EnumType.STRING)
+    private StatutValidation statutValidation;
     
     @ManyToOne
     @JoinColumn(name = "inscription_id")

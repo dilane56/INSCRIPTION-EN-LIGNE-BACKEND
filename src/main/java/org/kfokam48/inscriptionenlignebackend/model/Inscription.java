@@ -62,5 +62,11 @@ public class Inscription {
     @OneToMany(mappedBy = "inscription", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<EtapeInscription> etapes = new ArrayList<>();
+    
+    public int getDocumentsApprouves() {
+        return (int) documents.stream()
+            .filter(doc -> doc.getStatutValidation() == org.kfokam48.inscriptionenlignebackend.enums.StatutValidation.VALIDE)
+            .count();
+    }
 }
 

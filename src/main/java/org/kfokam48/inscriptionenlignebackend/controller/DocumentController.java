@@ -55,7 +55,7 @@ public class DocumentController {
             @PathVariable Long id,
             @RequestBody java.util.Map<String, String> request) {
         
-        String statut = request.get("statut");
+        String statut = request.get("statut"); // "VALIDE" ou "INVALIDE"
         String commentaire = request.get("commentaire");
         
         documentService.validateDocument(id, statut, commentaire);

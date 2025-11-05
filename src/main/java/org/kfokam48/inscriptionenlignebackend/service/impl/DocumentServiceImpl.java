@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.kfokam48.inscriptionenlignebackend.dto.document.DocumentRequestDTO;
 import org.kfokam48.inscriptionenlignebackend.dto.document.DocumentResponseDTO;
 import org.kfokam48.inscriptionenlignebackend.enums.TypeDocument;
+import org.kfokam48.inscriptionenlignebackend.enums.StatutValidation;
 import org.kfokam48.inscriptionenlignebackend.exception.RessourceNotFoundException;
 import org.kfokam48.inscriptionenlignebackend.mapper.DocumentMapper;
 import org.kfokam48.inscriptionenlignebackend.model.Document;
@@ -173,9 +174,10 @@ public class DocumentServiceImpl implements DocumentService {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Document not found"));
         
-        document.setStatutValidation(statut);
+        document.setStatutValidation(StatutValidation.valueOf(statut));
         document.setCommentaireValidation(commentaire);
         document.setDateValidation(LocalDateTime.now());
+        document.setValide(StatutValidation.VALIDE.equals(StatutValidation.valueOf(statut)));
         
         documentRepository.save(document);
         
@@ -187,7 +189,7 @@ public class DocumentServiceImpl implements DocumentService {
         Long candidatId = document.getInscription().getCandidat().getId();
         String typeDoc = getTypeDocumentLabel(document.getTypeDocument().name());
         
-        if ("APPROUVE".equals(statut)) {
+        if ("VALIDE".equals(statut)) {
             notificationService.createNotification(
                 candidatId,
                 "Document approuvé",
@@ -195,7 +197,7 @@ public class DocumentServiceImpl implements DocumentService {
                 (commentaire != null && !commentaire.trim().isEmpty() ? " Commentaire: " + commentaire : ""),
                 "DOCUMENT_VALIDE"
             );
-        } else if ("REJETE".equals(statut)) {
+        } else if ("INVALIDE".equals(statut)) {
             notificationService.createNotification(
                 candidatId,
                 "Document rejeté",

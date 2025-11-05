@@ -16,5 +16,6 @@ public interface InscriptionService {
     public List<InscriptionResponeDTO> getRecentInscriptions(int limit);
     public void updateStatut(Long inscriptionId, String statut, String commentaire);
     public void markEtapeComplete(Long inscriptionId, Integer etape);
+    public void recalculateProgress(Long inscriptionId);
 
 }

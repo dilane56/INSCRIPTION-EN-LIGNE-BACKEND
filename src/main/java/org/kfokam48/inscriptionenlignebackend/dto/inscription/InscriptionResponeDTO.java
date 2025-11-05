@@ -25,6 +25,7 @@ public class InscriptionResponeDTO {
     private Double pourcentageCompletion;
     private String adminValidateurNom;
     private List<DocumentInInscription> documents;
+    private Integer documentsApprouves;
     private LocalDateTime derniereModification;
 
     // Coordonnées du candidat (exposées pour affichage côté frontend)
